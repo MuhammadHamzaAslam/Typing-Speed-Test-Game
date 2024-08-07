@@ -21,64 +21,83 @@ const paragraphs = [
     "Typing on different devices can require different techniques. For example, typing on a smartphone or tablet can be quite different from typing on a traditional keyboard. The key layout, size, and tactile feedback can all affect your typing speed and accuracy. Practicing typing on different devices can help you become more adaptable and proficient. Many typing programs offer lessons and exercises specifically designed for mobile devices, helping you improve your typing skills on the go."
 ];
 let timer = 60;
-let timeLeft = timer
-let timeTag = document.querySelector('.time span')
-let charIndex = 0
-let typingInput = document.getElementById('typing-input')
-let paragraphBox = document.querySelector('.paragraph-box p')
-let mistakes = 0 
-let mistakeTag = document.querySelector('#mistakeTag')
+let timeLeft = timer;
+let timeTag = document.querySelector('.time span');
+let charIndex = 0;
+let typingInput = document.getElementById('typing-input');
+let paragraphBox = document.querySelector('.paragraph-box p');
+let mistakes = 0;
+let mistakeTag = document.querySelector('#mistakeTag');
+let intervalId;
+let wpmTag = document.querySelector('.wpm span')
+let cpmTag = document.querySelector('.cpm span')
+let tryAgain = document.getElementById('tryAgain')
 
 function getRandomPara() {
-    let randomIdx = Math.floor(Math.random()*paragraphs.length)
-    paragraphBox.innerHTML = ''
-    paragraphs[randomIdx].split('').forEach(characters =>{
-        let span = `<span>${characters}</span>`
-        paragraphBox.innerHTML += span
-    })
+    let randomIdx = Math.floor(Math.random() * paragraphs.length);
+    paragraphBox.innerHTML = '';
+    paragraphs[randomIdx].split('').forEach(character => {
+        let span = `<span>${character}</span>`;
+        paragraphBox.innerHTML += span;
+    });
 }
 
 function checkingLetters() {
-    let typedChar = typingInput.value
-    let characters = paragraphBox.querySelectorAll('span')
-    if(typedChar.length < charIndex) {
-        if(charIndex > 0) {
+    let typedChar = typingInput.value;
+    let characters = paragraphBox.querySelectorAll('span');
+    if (typedChar.length < charIndex) {
+        if (charIndex > 0) {
             charIndex--;
-            if(characters[charIndex].classList.contains("incorrect")) {
+            if (characters[charIndex].classList.contains("incorrect")) {
                 mistakes--;
             }
             characters[charIndex].classList.remove("correct", "incorrect");
         }
-    } 
-    else if(typedChar.length > charIndex) {
+    } else if (typedChar.length > charIndex) {
         if (typedChar[charIndex] === characters[charIndex].innerText) {
-            characters[charIndex].classList.add('correct')
+            characters[charIndex].classList.add('correct');
         } else {
-            characters[charIndex].classList.add('incorrect')
-            mistakes++
+            characters[charIndex].classList.add('incorrect');
+            mistakes++;
         }
         charIndex++;
     }
-    
-    mistakeTag.innerText = mistakes
+    let wpm = Math.round(((charIndex - mistakes)  / 5) / (timer - timeLeft) * 60);
+        wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
+        wpmTag.innerText = wpm;
+    cpmTag.innerText = charIndex - mistakes
+    mistakeTag.innerText = mistakes;
 }
-let intervalId ;
-function inittimer() {
-    if (timeLeft > 0) {
-        timeLeft--
-        timeTag.innerText = `${timeLeft}s`
-    }
-    else{
-        alert('Your Time IS uP')
-        clearInterval(intervalId)
-    }
-}
-window.addEventListener('load',()=>{
-    getRandomPara()
-    // inittimer()
-})
-typingInput.addEventListener('focus',()=>{
-    intervalId = setInterval(inittimer,1000)
 
+function inittimer() {
+    intervalId = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            timeTag.innerText = `${timeLeft}s`;
+        } else {
+            clearInterval(intervalId);
+            console.log('Time is up!'); 
+            Swal.fire({
+                title: "Ooops",
+                text: "The Time is up!",
+                icon: "question"
+            }).then(() => {
+                location.reload();
+            });
+        }
+    }, 1000);
+}
+
+typingInput.addEventListener('focus', () => {
+    if (!intervalId) { 
+        inittimer();
+    }
+});
+window.addEventListener('load', () => {
+    getRandomPara();
+    // inittimer();
+});
+typingInput.addEventListener('input', checkingLetters);
+tryAgain.addEventListener('click',()=>{
+    location.reload()
 })
-typingInput.addEventListener('input',checkingLetters)

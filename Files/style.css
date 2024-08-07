@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px !important;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.paragraph-box {
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555;
+    font-size: 18px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-details {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.result-details li {
+    list-style: none;
+}
+
+.result-details p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.result-details span {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#typing-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+#typing-input:focus {
+    border-color: #17A2B8;
+}
+
+button {
+    background-color: #17A2B8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #138496;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+.correct{
+    color: green;
+}
+.incorrect{
+    color: red;
+    background-color: pink;
+}
